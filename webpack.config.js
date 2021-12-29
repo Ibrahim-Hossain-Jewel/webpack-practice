@@ -1,11 +1,14 @@
 const path = require("path");
-//Export this webpack.config.js file
+const HtmlWebpackPlugin = require('html-webpack-plugin'); //Plugin for HTML
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 module.exports = {
-    entry: './src/app.js',
+    entry: './src/script/app.js',
     output: {
         path: path.resolve(__dirname, "public"),
         filename: 'app.bundle.js'
-    },mode: 'development',
+    },
+    mode: 'development',
     module: {
         rules: [
           {
@@ -17,7 +20,18 @@ module.exports = {
                 presets: ['@babel/preset-env']
               }
             }
-          }
+          },
+          //Below code are for CSS loader
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
+            }
         ]
-    }
+    },
+    plugins: [new HtmlWebpackPlugin()],
+    plugins: [
+        new MiniCssExtractPlugin({
+          linkType: "text/css",
+        }),
+      ]
 }
